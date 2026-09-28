@@ -1,0 +1,12 @@
+{
+  "name": "Amify — Offline Music",
+  "short_name": "Amify",
+  "description": "Your private offline music library.",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#09090b",
+  "theme_color": "#0b0b0e",
+  "icons": [
+    {"src":"icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}
+  ]
+}

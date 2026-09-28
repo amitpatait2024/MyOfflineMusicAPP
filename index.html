@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0b0b0e" />
+  <meta name="description" content="Amify — your private offline music library." />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23a855f7'/%3E%3Cpath d='M25 17v25.5a8.5 8.5 0 1 0 5 7.72V28h14v-7H25z' fill='white'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="styles.css" />
+  <title>Amify — Offline Music</title>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand"><span class="brand-dot"></span><span>Amify</span></div>
+      <nav class="nav">
+        <button class="nav-btn active" data-view="home"><span>⌂</span> Home</button>
+        <button class="nav-btn" data-view="songs"><span>♫</span> Songs</button>
+        <button class="nav-btn" data-view="albums"><span>▦</span> Albums</button>
+        <button class="nav-btn" data-view="favorites"><span>♥</span> Favorites</button>
+        <button class="nav-btn" data-view="recent"><span>◷</span> Recently Added</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <button id="scanBtn" class="side-action"><span>↻</span> Scan Downloads</button>
+        <button id="importBtn" class="side-action"><span>＋</span> Add Songs</button>
+        <button id="newAlbumBtn" class="side-action"><span>＋</span> New Album</button>
+      </div>
+      <div class="storage-note">
+        <div class="storage-icon">⛁</div>
+        <div><b>Local only</b><small>No cloud or account</small></div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="mobile-brand"><span class="brand-dot"></span>Amify</div>
+        <div class="search-wrap">
+          <span>⌕</span>
+          <input id="searchInput" type="search" placeholder="Search songs, albums..." autocomplete="off" />
+          <kbd>/</kbd>
+        </div>
+        <div class="top-actions">
+          <button id="mobileImportBtn" class="icon-btn" aria-label="Add songs">＋</button>
+          <button id="installBtn" class="install-btn hidden">Install</button>
+        </div>
+      </header>
+
+      <section id="homeView" class="view active-view">
+        <div class="hero">
+          <div>
+            <p class="eyebrow">YOUR PRIVATE MUSIC SPACE</p>
+            <h1>Listen to what <span>you own.</span></h1>
+            <p class="hero-copy">Keep downloaded music organized into your own albums — completely offline.</p>
+            <div class="hero-actions">
+              <button id="heroImportBtn" class="primary">＋ Add Songs</button>
+              <button id="heroScanBtn" class="secondary">↻ Scan Downloads</button>
+            </div>
+          </div>
+          <div class="hero-disc"><div class="disc-center">♪</div></div>
+        </div>
+
+        <div class="stats-grid">
+          <button class="stat-card" data-view-target="songs"><span class="stat-icon">♫</span><span class="stat-label">Songs</span><b id="songCount">0</b></button>
+          <button class="stat-card" data-view-target="albums"><span class="stat-icon">▦</span><span class="stat-label">Albums</span><b id="albumCount">0</b></button>
+          <button class="stat-card" data-view-target="favorites"><span class="stat-icon">♥</span><span class="stat-label">Favorites</span><b id="favoriteCount">0</b></button>
+          <button class="stat-card" data-view-target="recent"><span class="stat-icon">◷</span><span class="stat-label">Added today</span><b id="todayCount">0</b></button>
+        </div>
+
+        <section class="section-block">
+          <div class="section-head"><div><h2>Your Albums</h2><p>Keep Hindi, Marathi, Haryanvi and more separate.</p></div><button class="text-btn" data-view-target="albums">View all →</button></div>
+          <div id="homeAlbums" class="album-grid"></div>
+        </section>
+
+        <section class="section-block">
+          <div class="section-head"><div><h2>Recently Added</h2><p>Your latest downloads.</p></div><button class="text-btn" data-view-target="recent">View all →</button></div>
+          <div id="homeSongs" class="song-list compact"></div>
+        </section>
+      </section>
+
+      <section id="songsView" class="view">
+        <div class="page-head"><div><p class="eyebrow">LIBRARY</p><h1>All Songs</h1><p>Everything you've added to Amify.</p></div><button id="songsImportBtn" class="primary">＋ Add Songs</button></div>
+        <div class="toolbar"><div id="resultInfo"></div><select id="sortSelect"><option value="recent">Recently added</option><option value="title">Title</option><option value="artist">Artist</option><option value="duration">Duration</option></select></div>
+        <div id="songsList" class="song-list"></div>
+      </section>
+
+      <section id="albumsView" class="view">
+        <div class="page-head"><div><p class="eyebrow">COLLECTIONS</p><h1>Albums</h1><p>Create your own categories and playlists.</p></div><button id="albumsNewBtn" class="primary">＋ New Album</button></div>
+        <div id="albumsGrid" class="album-grid large"></div>
+      </section>
+
+      <section id="favoritesView" class="view">
+        <div class="page-head"><div><p class="eyebrow">YOUR PICKS</p><h1>Favorites</h1><p>Songs you've marked with a heart.</p></div></div>
+        <div id="favoritesList" class="song-list"></div>
+      </section>
+
+      <section id="recentView" class="view">
+        <div class="page-head"><div><p class="eyebrow">FRESH IN</p><h1>Recently Added</h1><p>Your newest songs at the top.</p></div></div>
+        <div id="recentList" class="song-list"></div>
+      </section>
+    </main>
+  </div>
+
+  <div id="player" class="player hidden">
+    <div class="player-info"><div id="playerArt" class="mini-art">♪</div><div class="player-meta"><b id="playerTitle">Nothing playing</b><span id="playerArtist">—</span></div></div>
+    <div class="player-main">
+      <div class="progress-row"><span id="currentTime">0:00</span><input id="progress" type="range" min="0" max="100" value="0" /><span id="duration">0:00</span></div>
+      <div class="controls"><button id="prevBtn" aria-label="Previous">⏮</button><button id="playBtn" class="play-main" aria-label="Play">▶</button><button id="nextBtn" aria-label="Next">⏭</button><button id="shuffleBtn" class="tiny" aria-label="Shuffle">⤨</button><button id="repeatBtn" class="tiny" aria-label="Repeat">↻</button></div>
+    </div>
+    <div class="player-right"><button id="queueBtn" class="tiny" aria-label="Queue">☷</button></div>
+  </div>
+
+  <div id="modalBackdrop" class="modal-backdrop hidden"></div>
+  <div id="albumModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="albumModalTitle">
+    <div class="modal-head"><h3 id="albumModalTitle">New Album</h3><button class="close-modal">×</button></div>
+    <label>Name<input id="albumName" maxlength="40" placeholder="e.g. Hindi Songs" /></label>
+    <label>Icon<select id="albumIcon"><option>🎵</option><option>❤️</option><option>🇮🇳</option><option>🔥</option><option>🟠</option><option>🎧</option><option>🏋️</option><option>🌙</option><option>✨</option></select></label>
+    <div class="modal-actions"><button class="secondary close-modal">Cancel</button><button id="createAlbumConfirm" class="primary">Create</button></div>
+  </div>
+
+  <div id="songMenu" class="context-menu hidden"></div>
+  <input id="fileInput" type="file" accept="audio/*,.mp3,.wav,.m4a,.aac,.flac,.ogg,.opus" multiple hidden />
+
+  <audio id="audio" preload="metadata"></audio>
+  <script src="app.js"></script>
+</body>
+</html>
